@@ -1,1 +1,170 @@
-V
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>V Todo</title>
+<meta name="description" content="Gestion de tâches moderne et élégante" />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#E11D2E" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="V Todo" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="icon" href="icons/favicon.png" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ================= ANIMATION DE DÉMARRAGE ================= -->
+<div id="intro" aria-hidden="true">
+  <div id="intro-lines"></div>
+  <div id="intro-flash"></div>
+  <div id="intro-logo">V</div>
+</div>
+
+<!-- ================= APPLICATION ================= -->
+<div id="app" hidden>
+
+  <!-- ---------- ÉCRAN ACCUEIL ---------- -->
+  <section class="screen" id="screen-home" data-screen="home">
+    <header class="home-header">
+      <div class="home-date">
+        <p id="date-day" class="date-day">Lundi</p>
+        <h1 id="date-full" class="date-full">1 janvier 2026</h1>
+      </div>
+      <button id="search-toggle" class="icon-btn glass" aria-label="Rechercher">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+
+    <div id="search-bar" class="search-bar glass" hidden>
+      <input id="search-input" type="text" placeholder="Rechercher une tâche…" autocomplete="off" />
+    </div>
+
+    <div class="counter-row">
+      <div id="task-counter" class="task-counter">
+        <span id="counter-number">0</span>
+        <span id="counter-label">tâche restante</span>
+      </div>
+      <button id="folders-toggle" class="chip glass" aria-label="Dossiers">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"/></svg>
+        <span id="folder-current-label">Tous</span>
+      </button>
+    </div>
+
+    <!-- Dossiers -->
+    <div id="folders-panel" class="folders-panel" hidden>
+      <div id="folders-list" class="folders-list"></div>
+      <button id="add-folder-btn" class="folder-add glass">+ Nouveau dossier</button>
+    </div>
+
+    <!-- Liste des tâches -->
+    <div id="task-list" class="task-list"></div>
+    <p id="empty-state" class="empty-state" hidden>Aucune tâche pour l'instant.<br/>Ajoute ta première tâche ci-dessous ✨</p>
+
+    <!-- Zone de création -->
+    <form id="add-task-form" class="add-task-bar glass">
+      <input id="new-task-input" type="text" placeholder="Ajouter une tâche…" autocomplete="off" maxlength="140" />
+      <button type="submit" class="icon-btn add-btn" aria-label="Ajouter">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- ---------- ÉCRAN CALENDRIER ---------- -->
+  <section class="screen" id="screen-calendar" data-screen="calendar" hidden>
+    <header class="cal-header">
+      <button id="cal-prev" class="icon-btn glass" aria-label="Mois précédent">‹</button>
+      <h1 id="cal-month-label">Janvier 2026</h1>
+      <button id="cal-next" class="icon-btn glass" aria-label="Mois suivant">›</button>
+    </header>
+    <div class="cal-weekdays">
+      <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+    </div>
+    <div id="cal-grid" class="cal-grid"></div>
+
+    <div id="day-panel" class="day-panel glass" hidden>
+      <div class="day-panel-header">
+        <h2 id="day-panel-title">Jour</h2>
+        <button id="day-panel-close" class="icon-btn" aria-label="Fermer">✕</button>
+      </div>
+      <div id="day-panel-tasks" class="day-panel-tasks"></div>
+      <button id="day-panel-add" class="folder-add glass">+ Ajouter une tâche ce jour</button>
+    </div>
+  </section>
+
+  <!-- ---------- ÉCRAN RÉGLAGES ---------- -->
+  <section class="screen" id="screen-settings" data-screen="settings" hidden>
+    <header class="settings-header"><h1>Réglages</h1></header>
+
+    <div class="settings-group">
+      <h2 class="settings-title">Apparence</h2>
+      <div id="theme-grid" class="theme-grid"></div>
+    </div>
+
+    <div class="settings-group">
+      <h2 class="settings-title">Historique</h2>
+      <div id="history-list" class="history-list"></div>
+      <p id="history-empty" class="empty-state small" hidden>Aucune tâche terminée pour l'instant.</p>
+      <button id="clear-history-btn" class="danger-btn glass">Supprimer l'historique</button>
+    </div>
+
+    <div class="settings-group">
+      <h2 class="settings-title">Informations</h2>
+      <div class="info-card glass">
+        <p><strong>V Todo</strong></p>
+        <p class="muted">Version V1-2026 PWA TST</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- NAVIGATION BASSE ---------- -->
+  <nav id="bottom-nav" class="bottom-nav glass">
+    <button class="nav-btn active" data-target="home" aria-label="Accueil">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg>
+      <span class="nav-bubble"></span>
+    </button>
+    <button class="nav-btn" data-target="calendar" aria-label="Calendrier">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M7 2v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10z"/></svg>
+      <span class="nav-bubble"></span>
+    </button>
+    <button class="nav-btn" data-target="settings" aria-label="Réglages">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19.14 12.94a7.14 7.14 0 000-1.88l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.6-.22l-2.39.96a7.03 7.03 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.5-.42h-3.84a.5.5 0 00-.5.42l-.36 2.54c-.59.24-1.14.56-1.63.94l-2.39-.96a.5.5 0 00-.6.22L2.65 8.84a.5.5 0 00.12.64l2.03 1.58a7.14 7.14 0 000 1.88l-2.03 1.58a.5.5 0 00-.12.64l1.92 3.32c.14.24.42.32.6.22l2.39-.96c.49.38 1.04.7 1.63.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .45-.18.5-.42l.36-2.54c.59-.24 1.14-.56 1.63-.94l2.39.96c.24.1.46.02.6-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1112 8.5a3.5 3.5 0 010 7z"/></svg>
+      <span class="nav-bubble"></span>
+    </button>
+  </nav>
+
+  <!-- ---------- MENU CONTEXTUEL (appui long) ---------- -->
+  <div id="context-overlay" class="context-overlay" hidden>
+    <div id="context-menu" class="context-menu glass">
+      <button class="ctx-item" data-action="normal"><span class="dot dot-normal"></span> Normal</button>
+      <button class="ctx-item" data-action="important"><span class="dot dot-important"></span> Important</button>
+      <button class="ctx-item" data-action="urgent"><span class="dot dot-urgent"></span> Urgent</button>
+      <button class="ctx-item" data-action="calendar">📅 Ajouter au calendrier</button>
+      <button class="ctx-item danger" data-action="delete">🗑️ Supprimer</button>
+    </div>
+  </div>
+
+  <!-- ---------- MODALES (dossier / date tâche) ---------- -->
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div id="modal-box" class="modal-box glass">
+      <h2 id="modal-title">Titre</h2>
+      <div id="modal-body"></div>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="modal-btn ghost">Annuler</button>
+        <button id="modal-confirm" class="modal-btn primary">Valider</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
