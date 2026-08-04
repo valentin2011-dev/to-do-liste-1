@@ -38,6 +38,7 @@
 [data-theme="light"]{ --accent:#E11D2E; }
  
 *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden]{ display: none !important; }
  
 html,body{
   margin:0; padding:0; height:100%;
